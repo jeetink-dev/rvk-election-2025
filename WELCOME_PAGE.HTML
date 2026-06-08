@@ -1,192 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Welcome - Student Elections</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body {
-      height: 100%;
-      font-family: 'Segoe UI', sans-serif;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome - Student Elections</title>
 
-    .background {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: -2;
-      background: linear-gradient(rgba(255,253,231, 0.9), rgba(255,253,231, 0.9)),
-                  url('panchamukhi.png') no-repeat center center fixed;
-      background-size: cover;
-    }
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
 
-    .overlay {
-      position: relative;
-      z-index: 1;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 30px;
-    }
+body{
+font-family:'Segoe UI',sans-serif;
+background:#fffde7;
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+}
 
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 30px;
-      flex-wrap: wrap;
-      margin-bottom: 30px;
-    }
+.container{
+width:90%;
+max-width:700px;
+background:white;
+padding:40px;
+border-radius:20px;
+box-shadow:0 10px 30px rgba(0,0,0,0.15);
+text-align:center;
+}
 
-    .header img {
-      height: 100px;
-    }
+.header{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:20px;
+flex-wrap:wrap;
+margin-bottom:20px;
+}
 
-    .header h1 {
-      font-size: 36px;
-      font-family: Georgia, serif;
-      color: #0D47A1;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-      margin: 0;
-      text-align: center;
-    }
+.header img{
+height:80px;
+}
 
-    h2 {
-      font-size: 24px;
-      color: #BF360C;
-      font-weight: 600;
-      font-family: 'Georgia', serif;
-      margin: 10px 0 20px 0;
-    }
+h1{
+color:#1a237e;
+font-size:28px;
+font-family:Georgia,serif;
+}
 
-    .student-info {
-      background-color: #fffde7;
-      padding: 20px 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      text-align: center;
-    }
+h2{
+color:#d84315;
+margin-bottom:30px;
+}
 
-    .student-info label,
-    .student-info select {
-      display: block;
-      margin: 10px auto;
-      font-size: 18px;
-    }
+label{
+display:block;
+margin-top:20px;
+margin-bottom:8px;
+font-weight:bold;
+color:#0d47a1;
+}
 
-    .student-info select {
-      padding: 6px;
-      width: 220px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
+select{
+width:100%;
+padding:12px;
+font-size:16px;
+border-radius:8px;
+border:1px solid #ccc;
+}
 
-    .enter-btn {
-      margin-top: 20px;
-      padding: 14px 28px;
-      font-size: 18px;
-      background-color: #ff5722;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
-    }
+button{
+margin-top:30px;
+padding:14px 30px;
+font-size:18px;
+background:#388e3c;
+color:white;
+border:none;
+border-radius:10px;
+cursor:pointer;
+}
 
-    .enter-btn:hover {
-      background-color: #e64a19;
-    }
-  </style>
+button:hover{
+background:#2e7d32;
+}
+</style>
 </head>
+
 <body>
-  <div class="background"></div>
-  <div class="overlay">
-    <div class="header">
-      <img src="2 (2).jpg" alt="Left Logo">
-      <h1>RASHTROTTHANA VIDYA KENDRA, KALABURAGI</h1>
-      <img src="2.jpg" alt="Right Logo">
-    </div>
-    <h2>Empowering Young Leaders: 2025–26 Student Elections</h2>
 
-    <div class="student-info">
-      <label for="studentClass"><b><font color="blue">CLASS:</font></b></label>
-      <select id="studentClass" onchange="populateRolls()" required>
-        <option value="">Select Class</option>
-        <option value="IVA">IVA</option>
-        <option value="IVB">IVB</option>
-        <option value="VA">VA</option>
-        <option value="VB">VB</option>
-        <option value="VIA">VIA</option>
-        <option value="VIB">VIB</option>
-        <option value="VII">VII</option>
-        <option value="VIII">VIII</option>
-      </select>
+<div class="container">
 
-      <label for="rollNumber"><b><font color="blue">ROLL NUMBER:</font></b></label>
-      <select id="rollNumber" required>
-        <option value="">Select Roll Number</option>
-      </select>
+<div class="header">
+<img src="1.jpg" alt="Logo">
+<div>
+<h1>RASHTROTTHANA VIDYA KENDRA</h1>
+<h1>KALABURAGI</h1>
+</div>
+<img src="2.png" alt="Logo">
+</div>
 
-      <button class="enter-btn" onclick="proceedToVote()">Enter Voting Booth</button>
-    </div>
-  </div>
+<h2>Student Council Election 2025-26</h2>
 
-  <script>
-    const classWiseRolls = {
-      "IVA": 30,
-      "IVB": 30,
-      "VA": 35,
-      "VB": 35,
-      "VIA": 30,
-      "VIB": 30,
-      "VII": 46,
-      "VIII": 38
-    };
+<label>CLASS</label>
 
-    function populateRolls() {
-      const selectedClass = document.getElementById("studentClass").value;
-      const rollDropdown = document.getElementById("rollNumber");
-      rollDropdown.innerHTML = '<option value="">Select Roll Number</option>';
+<select id="studentClass" onchange="populateRolls()">
+<option value="">Select Class</option>
+<option value="IVA">IVA</option>
+<option value="IVB">IVB</option>
+<option value="VA">VA</option>
+<option value="VB">VB</option>
+<option value="VIA">VIA</option>
+<option value="VIB">VIB</option>
+<option value="VII">VII</option>
+<option value="VIII">VIII</option>
+</select>
 
-      if (classWiseRolls[selectedClass]) {
-        for (let i = 1; i <= classWiseRolls[selectedClass]; i++) {
-          const option = document.createElement("option");
-          option.value = i;
-          option.textContent = i;
-          rollDropdown.appendChild(option);
-        }
-      }
-    }
+<label>ROLL NUMBER</label>
 
-    function proceedToVote() {
-      const roll = document.getElementById('rollNumber').value;
-      const studentClass = document.getElementById('studentClass').value;
+<select id="rollNumber">
+<option value="">Select Roll Number</option>
+</select>
 
-      if (!roll || !studentClass) {
-        alert("Please enter both Roll Number and Class to proceed.");
-        return;
-      }
+<button onclick="enterVotingBooth()">
+ENTER VOTING BOOTH
+</button>
 
-      const voterKey = `${studentClass}_${roll}`;
-      const votedList = JSON.parse(localStorage.getItem("votedStudents")) || [];
+</div>
 
-      if (votedList.includes(voterKey)) {
-        alert("You have already voted.");
-        return;
-      }
+<script>
 
-      votedList.push(voterKey);
-      localStorage.setItem("votedStudents", JSON.stringify(votedList));
-      sessionStorage.setItem("rollNumber", roll);
-      sessionStorage.setItem("studentClass", studentClass);
+const classWiseRolls = {
+IVA:30,
+IVB:30,
+VA:35,
+VB:35,
+VIA:30,
+VIB:30,
+VII:46,
+VIII:38
+};
 
-      window.location.href = "vote1.html";
-    }
-  </script>
+function populateRolls(){
+
+const selectedClass =
+document.getElementById("studentClass").value;
+
+const rollDropdown =
+document.getElementById("rollNumber");
+
+rollDropdown.innerHTML =
+'<option value="">Select Roll Number</option>';
+
+if(classWiseRolls[selectedClass]){
+
+for(let i=1;i<=classWiseRolls[selectedClass];i++){
+
+const option =
+document.createElement("option");
+
+option.value=i;
+option.textContent=i;
+
+rollDropdown.appendChild(option);
+}
+}
+}
+
+function enterVotingBooth(){
+
+const studentClass =
+document.getElementById("studentClass").value;
+
+const rollNumber =
+document.getElementById("rollNumber").value;
+
+if(!studentClass || !rollNumber){
+
+alert(
+"Please select Class and Roll Number."
+);
+
+return;
+}
+
+sessionStorage.setItem(
+"studentClass",
+studentClass
+);
+
+sessionStorage.setItem(
+"rollNumber",
+rollNumber
+);
+
+window.location.href="vote1.html";
+}
+
+</script>
+
 </body>
 </html>
