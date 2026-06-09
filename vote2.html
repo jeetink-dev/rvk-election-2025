@@ -1,137 +1,267 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Student Voting Booth</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap');
-    body { font-family: 'Ubuntu', sans-serif; background: #f9fbe7; margin: 0; padding: 20px; }
-    .header { display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 20px; }
-    .header img { height: 80px; }
-    .school-title { text-align: center; }
-    .school-title h1 { font-size: 24px; margin: 0; color: #1b5e20; }
-    .school-title p { font-size: 14px; margin: 4px 0 0; color: #4e4e4e; }
-    h2 { text-align: center; color: #1b5e20; font-size: 28px; margin-bottom: 30px; }
-    .ministry { border: 2px solid #a5d6a7; border-radius: 10px; padding: 20px; margin-bottom: 40px; background-color: #ffffff; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); }
-    .ministry h3 { text-align: center; text-transform: uppercase; color: white; background-color: #1b5e20; padding: 12px; border-radius: 8px; font-size: 20px; letter-spacing: 1px; margin-top: 0; }
-    .candidates { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 20px; }
-    .candidate { display: flex; flex-direction: column; align-items: center; width: 130px; padding: 12px; border-radius: 12px; }
-    .candidate:hover { background-color: #e8f5e9; cursor: pointer; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); transform: translateY(-4px); }
-    .candidate .photo { width: 100px; height: 100px; background-color: #c8e6c9; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 36px; font-weight: bold; color: #2e7d32; margin-bottom: 10px; }
-    .candidate-name { font-size: 16px; font-weight: 600; text-align: center; margin-bottom: 5px; }
-    .candidate input[type="radio"] { transform: scale(1.2); margin-top: 5px; }
-    .submit-btn { display: block; margin: 40px auto; padding: 14px 36px; font-size: 18px; background-color: #388e3c; color: white; border: none; border-radius: 8px; cursor: pointer; }
-    .submit-btn:hover { background-color: #2e7d32; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Election Results Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+font-family:Arial,sans-serif;
+background:#f4f7fc;
+margin:0;
+padding:0;
+}
+
+.header{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:20px;
+padding:20px;
+background:#0d47a1;
+color:white;
+}
+
+.header img{
+height:80px;
+}
+
+.school-title{
+text-align:center;
+}
+
+.school-title h1{
+margin:0;
+font-size:32px;
+}
+
+.school-title p{
+margin:5px 0;
+font-size:16px;
+}
+
+.login-box{
+width:350px;
+margin:120px auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 4px 15px rgba(0,0,0,.2);
+text-align:center;
+}
+
+.login-box input{
+width:90%;
+padding:12px;
+margin-top:10px;
+font-size:16px;
+}
+
+.login-box button{
+padding:12px 25px;
+margin-top:15px;
+font-size:16px;
+background:#2e7d32;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+
+.dashboard{
+display:none;
+padding:20px;
+}
+
+.top-bar{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:15px;
+margin-bottom:25px;
+}
+
+.card{
+background:white;
+padding:15px 25px;
+border-radius:12px;
+box-shadow:0 3px 10px rgba(0,0,0,.1);
+font-size:20px;
+font-weight:bold;
+}
+
+.btn{
+padding:10px 20px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-size:16px;
+}
+
+.print-btn{
+background:#1565c0;
+color:white;
+}
+
+.csv-btn{
+background:#2e7d32;
+color:white;
+}
+
+.ministry-card{
+background:white;
+margin-bottom:30px;
+padding:20px;
+border-radius:15px;
+box-shadow:0 3px 12px rgba(0,0,0,.1);
+}
+
+.ministry-title{
+font-size:24px;
+font-weight:bold;
+color:#0d47a1;
+margin-bottom:15px;
+text-align:center;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:15px;
+}
+
+table th{
+background:#0d47a1;
+color:white;
+padding:10px;
+}
+
+table td{
+padding:10px;
+text-align:center;
+border:1px solid #ddd;
+}
+
+.winner{
+background:#c8e6c9;
+font-weight:bold;
+}
+
+canvas{
+max-width:100%;
+margin-top:20px;
+}
+
+.footer{
+text-align:center;
+padding:20px;
+color:#555;
+}
+
+</style>
 </head>
+
 <body>
-  <div class="header">
-    <img src="2 (2).JPG" alt="Left Logo">
-    <div class="school-title">
-      <h1>RASHTROTTHANA VIDYA KENDRA, KALABURAGI</h1>
-      <p>Empowering Leaders of Tomorrow</p>
-    </div>
-    <img src="2.JPG" alt="Right Logo">
-  </div>
 
-  <h2>Student Council Voting – 2025–26</h2>
-  <form id="votingForm" onsubmit="return validateVote();">
-    <script>
-      const ministries = {
-        "vidyarthi_boys": ["AMARNATH", "AMBRISH"],
-        "vidyarthi_girls": ["SINCHANA", "ANAGHA", "ANVI"],
-        "anushasan": ["KARTHIK", "MANISH", "AKSHATA", "SPOORTI", "SANIKA", "PRAJWAL C", "SAMARTH", "ADVAITH J", "PRACHEEN", "SAMRUDDHI", "SANVI"],
-        "pariyavaran": ["NITYASHREE A T", "PRABHAS", "PRITHVIRAJ", "ARNAV", "SUPRITA", "AROHI", "KHAGENDRA", "AKSHATA"],
-        "aarogya": ["CHIRANTAN", "NAYANA", "SHASHANK", "SHRADDHA", "SHREYAS", "SAMRUDDHI K", "SURAJ", "CHETAN", "BHAGYAWANTH"],
-        "kreeda": ["AYUSH", "KRUPA", "HARSH", "SHREENIDHI", "SANVI", "SAAKSHI", "RISHIKA", "PRATHAM", "KUSHAL"],
-        "sanskrutik": ["SUDHIKSHA", "PRIYA", "PAVAN", "ANANYA", "SUNIDHI", "SUDHANVA", "KUMUD", "AMEJU", "SAHANA", "SANGMESH", "VITABHYA"],
-        "vahini": ["ATHARVA (ORANGE)", "RAJNEET (BLUE)", "SIDDARTH (BLUE)", "TARUN (YELLOW)", "SUPRIT (YELLOW)", "SHARAN (YELLOW)", "NITYASHREE M H (YELLOW)", "PREETAM (RED)", "PRAKRUTI (ORANGE)", "AMRUTA (ORANGE)", "HARSHITA (YELLOW)", "SANCHI (RED)", "AKSHARA (BLUE)"]
-      };
+<div id="loginPage">
 
-      const ministryNames = {
-        "vidyarthi_boys": "Vidyarthi Pradhan (Boys)",
-        "vidyarthi_girls": "Vidyarthi Pradhan (Girls)",
-        "anushasan": "Anushasan Pradhan",
-        "pariyavaran": "Pariyavaran Pradhan",
-        "aarogya": "Aarogya Pradhan",
-        "kreeda": "Kreeda Pradhan",
-        "sanskrutik": "Sanskrutik Pradhan",
-        "vahini": "Vahini Pramukh"
-      };
+<div class="login-box">
 
-      document.addEventListener("DOMContentLoaded", () => {
-        const form = document.getElementById("votingForm");
-        const fragment = document.createDocumentFragment();
+<h2>Election Results Login</h2>
 
-        for (const key of Object.keys(ministryNames)) {
-          const candidates = ministries[key];
-          const div = document.createElement("div");
-          div.className = "ministry";
-          div.id = key;
-          div.innerHTML = `<h3>${ministryNames[key]}</h3>`;
+<input
+type="password"
+id="password"
+placeholder="Enter Password">
 
-          const container = document.createElement("div");
-          container.className = "candidates";
+<br>
 
-          candidates.forEach(name => {
-            const label = document.createElement("label");
-            label.className = "candidate";
-            label.innerHTML = `
-              <div class="photo">${name.charAt(0)}</div>
-              <div class="candidate-name">${name}</div>
-              <input type="radio" name="${key}" value="${name}">
-            `;
-            container.appendChild(label);
-          });
+<button onclick="login()">
+Login
+</button>
 
-          div.appendChild(container);
-          fragment.appendChild(div);
-        }
+</div>
 
-        form.insertBefore(fragment, form.querySelector(".submit-btn"));
-      });
+</div>
 
-      function validateVote() {
-        for (const key in ministries) {
-          if (!document.querySelector(`input[name="${key}"]:checked`)) {
-            alert(`Please select one candidate for ${ministryNames[key]}`);
-            document.getElementById(key).scrollIntoView({ behavior: "smooth" });
-            return false;
-          }
-        }
+<div id="dashboard" class="dashboard">
 
-        const votes = JSON.parse(localStorage.getItem("votes") || "[]");
-        const voterId = "voter_" + Date.now();
+<div class="header">
 
-        for (const key in ministries) {
-          const ministryName = ministryNames[key];
-          const selected = document.querySelector(`input[name="${key}"]:checked`);
-          if (selected) {
-            votes.push([voterId, ministryName, selected.value]);
-          }
-        }
+<img src="2.JPG">
 
-        localStorage.setItem("votes", JSON.stringify(votes));
+<div class="school-title">
 
-        document.querySelector(".submit-btn").disabled = true;
-        const message = document.createElement("div");
-        message.textContent = "✅ Your vote has been recorded. Thank you!";
-        message.style.textAlign = "center";
-        message.style.color = "#2e7d32";
-        message.style.fontSize = "24px";
-        message.style.marginTop = "30px";
-        document.getElementById("votingForm").appendChild(message);
+<h1>RASHTROTTHANA VIDYA KENDRA</h1>
 
-        setTimeout(() => {
-          window.location.href = "WELCOME_PAGE.html";
-        }, 3000);
+<p>KALABURAGI</p>
 
-        return false;
-      }
-    </script>
+<p>Student Council Election Results 2025–26</p>
 
-    <button type="submit" class="submit-btn">Submit Vote</button>
-  </form>
-</body>
-</html>
+</div>
+
+<img src="2 (2).JPG">
+
+</div>
+
+<div class="top-bar">
+
+<div class="card">
+Total Votes:
+<span id="totalVotes">0</span>
+</div>
+
+<button class="btn print-btn" onclick="window.print()">
+Print Results
+</button>
+
+<button class="btn csv-btn" onclick="exportCSV()">
+Export CSV
+</button>
+
+</div>
+
+<div id="resultsContainer"></div>
+
+<div class="footer">
+Auto Refresh Every 10 Seconds
+</div>
+
+</div>
+
+<script>
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbyPT1kEWtcJlMgdb2LBNHFxcgzEW5dYbErgUGWHzcMrl0WjWDNg6azGcFzC68NUiX9NLQ/exec";
+
+const ADMIN_PASSWORD = "admin123";
+
+let latestData = {};
+
+function login(){
+
+const pass =
+document.getElementById("password").value;
+
+if(pass === ADMIN_PASSWORD){
+
+document.getElementById("loginPage").style.display="none";
+
+document.getElementById("dashboard").style.display="block";
+
+loadResults();
+
+setInterval(loadResults,10000);
+
+}else{
+
+alert("Invalid Password");
+
+}
+
+}
