@@ -168,106 +168,162 @@
   <h2>Student Council Voting – 2025–26</h2>
   <form id="votingForm" onsubmit="return validateVote();">
     <script>
-      const ministries = {
-        "vidyarthi_boys": ["AMARNATH", "AMBRISH"],
-        "vidyarthi_girls": ["SINCHANA", "ANAGHA", "ANVI"],
-        "anushasan": ["KARTHIK", "MANISH", "AKSHATA", "SPOORTI", "SANIKA", "PRAJWAL C", "SAMARTH", "ADVAITH J", "PRACHEEN", "SAMRUDDHI", "SANVI"],
-        "pariyavaran": ["NITYASHREE A T", "PRABHAS", "PRITHVIRAJ", "ARNAV", "SUPRITA", "AROHI", "KHAGENDRA", "AKSHATA"],
-        "aarogya": ["CHIRANTAN", "NAYANA", "SHASHANK", "SHRADDHA", "SHREYAS", "SAMRUDDHI K", "SURAJ", "CHETAN", "BHAGYAWANTH"],
-        "kreeda": ["AYUSH", "KRUPA", "HARSH", "SHREENIDHI", "SANVI", "SAAKSHI", "RISHIKA", "PRATHAM", "KUSHAL"],
-        "sanskrutik": ["SUDHIKSHA", "PRIYA", "PAVAN", "ANANYA", "SUNIDHI", "SUDHANVA", "KUMUD", "AMEJU", "SAHANA", "SANGMESH", "VITABHYA"],
-        "vahini": ["ATHARVA (ORANGE)", "RAJNEET (BLUE)", "SIDDARTH (BLUE)", "TARUN (YELLOW)", "SUPRIT (YELLOW)", "SHARAN (YELLOW)", "NITYASHREE M H (YELLOW)", "PREETAM (RED)", "PRAKRUTI (ORANGE)", "AMRUTA (ORANGE)", "HARSHITA (YELLOW)", "SANCHI (RED)", "AKSHARA (BLUE)"]
-      };
 
-      const ministryNames = {
-      "vidyarthi_boys": "Vidyarthi Pradhan (Boys)",
-        "vidyarthi_girls": "Vidyarthi Pradhan (Girls)",
-        "anushasan": "Anushasan Pradhan",
-        "pariyavaran": "Pariyavaran Pradhan",
-        "aarogya": "Aarogya Pradhan",
-        "kreeda": "Kreeda Pradhan",
-        "sanskrutik": "Sanskrutik Pradhan",
-        "vahini": "Vahini Pramukh"
-      };
-
-      document.addEventListener("DOMContentLoaded", () => {
-        const form = document.getElementById("votingForm");
-        const fragment = document.createDocumentFragment();
-
-        for (const key of Object.keys(ministryNames)) {
-          const candidates = ministries[key];
-          const div = document.createElement("div");
-          div.className = "ministry";
-          div.id = key;
-          div.innerHTML = `<h3>${ministryNames[key]}</h3>`;
-
-          const container = document.createElement("div");
-          container.className = "candidates";
-
-          candidates.forEach(name => {
-            const label = document.createElement("label");
-            label.className = "candidate";
-            label.innerHTML = `
-              <div class="photo">${name.charAt(0)}</div>
-              <div class="candidate-name">${name}</div>
-              <input type="radio" name="${key}" value="${name}">
-            `;
-            container.appendChild(label);
-          });
-
-          div.appendChild(container);
-          fragment.appendChild(div);
-        }
-
-        form.insertBefore(fragment, form.querySelector(".submit-btn"));
-
-      });
-	  		const WEBAPP_URL =
+const WEBAPP_URL =
 "https://script.google.com/macros/s/AKfycbwCz_n0UJm2LH3SOXXFyXSmggVtSbTZumS-MFSR4UEILE-5TMqPJUuqB7vidqymB4As5w/exec";
 
-      function validateVote() {
-        for (const key in ministries) {
-          if (!document.querySelector(`input[name="${key}"]:checked`)) {
-            alert(`Please select one candidate for ${ministryNames[key]}`);
-            document.getElementById(key).scrollIntoView({ behavior: "smooth" });
-            return false;
-          }
-        }
-	
+const ministries = {
+  "vidyarthi_boys": ["AMARNATH", "AMBRISH"],
+  "vidyarthi_girls": ["SINCHANA", "ANAGHA", "ANVI"],
+  "anushasan": ["KARTHIK", "MANISH", "AKSHATA", "SPOORTI", "SANIKA", "PRAJWAL C", "SAMARTH", "ADVAITH J", "PRACHEEN", "SAMRUDDHI", "SANVI"],
+  "pariyavaran": ["NITYASHREE A T", "PRABHAS", "PRITHVIRAJ", "ARNAV", "SUPRITA", "AROHI", "KHAGENDRA", "AKSHATA"],
+  "aarogya": ["CHIRANTAN", "NAYANA", "SHASHANK", "SHRADDHA", "SHREYAS", "SAMRUDDHI K", "SURAJ", "CHETAN", "BHAGYAWANTH"],
+  "kreeda": ["AYUSH", "KRUPA", "HARSH", "SHREENIDHI", "SANVI", "SAAKSHI", "RISHIKA", "PRATHAM", "KUSHAL"],
+  "sanskrutik": ["SUDHIKSHA", "PRIYA", "PAVAN", "ANANYA", "SUNIDHI", "SUDHANVA", "KUMUD", "AMEJU", "SAHANA", "SANGMESH", "VITABHYA"],
+  "vahini": ["ATHARVA (ORANGE)", "RAJNEET (BLUE)", "SIDDARTH (BLUE)", "TARUN (YELLOW)", "SUPRIT (YELLOW)", "SHARAN (YELLOW)", "NITYASHREE M H (YELLOW)", "PREETAM (RED)", "PRAKRUTI (ORANGE)", "AMRUTA (ORANGE)", "HARSHITA (YELLOW)", "SANCHI (RED)", "AKSHARA (BLUE)"]
+};
 
+const ministryNames = {
+  "vidyarthi_boys": "Vidyarthi Pradhan (Boys)",
+  "vidyarthi_girls": "Vidyarthi Pradhan (Girls)",
+  "anushasan": "Anushasan Pradhan",
+  "pariyavaran": "Pariyavaran Pradhan",
+  "aarogya": "Aarogya Pradhan",
+  "kreeda": "Kreeda Pradhan",
+  "sanskrutik": "Sanskrutik Pradhan",
+  "vahini": "Vahini Pramukh"
+};
 
-        const studentClass = sessionStorage.getItem("studentClass");
-const rollNumber = sessionStorage.getItem("rollNumber");
+document.addEventListener("DOMContentLoaded", () => {
 
-const voterId = `${studentClass}_${rollNumber}`;
+  const form = document.getElementById("votingForm");
+  const fragment = document.createDocumentFragment();
 
-const votes = [];
+  for (const key of Object.keys(ministryNames)) {
 
-for (const key in ministries) {
+    const candidates = ministries[key];
 
-  const selected =
-    document.querySelector(`input[name="${key}"]:checked`);
+    const div = document.createElement("div");
+    div.className = "ministry";
+    div.id = key;
+    div.innerHTML = `<h3>${ministryNames[key]}</h3>`;
 
-  votes.push({
-    ministry: ministryNames[key],
-    candidate: selected.value
+    const container = document.createElement("div");
+    container.className = "candidates";
+
+    candidates.forEach(name => {
+
+      const label = document.createElement("label");
+      label.className = "candidate";
+
+      label.innerHTML = `
+        <div class="photo">${name.charAt(0)}</div>
+        <div class="candidate-name">${name}</div>
+        <input type="radio" name="${key}" value="${name}">
+      `;
+
+      container.appendChild(label);
+
+    });
+
+    div.appendChild(container);
+    fragment.appendChild(div);
+
+  }
+
+  form.insertBefore(
+    fragment,
+    document.querySelector(".submit-btn")
+  );
+
+});
+
+function validateVote() {
+
+  for (const key in ministries) {
+
+    if (!document.querySelector(`input[name="${key}"]:checked`)) {
+
+      alert(`Please select one candidate for ${ministryNames[key]}`);
+
+      document.getElementById(key)
+        .scrollIntoView({
+          behavior: "smooth"
+        });
+
+      return false;
+    }
+  }
+
+  const studentClass =
+    sessionStorage.getItem("studentClass");
+
+  const rollNumber =
+    sessionStorage.getItem("rollNumber");
+
+  const voterId =
+    `${studentClass}_${rollNumber}`;
+
+  const votes = [];
+
+  for (const key in ministries) {
+
+    const selected =
+      document.querySelector(
+        `input[name="${key}"]:checked`
+      );
+
+    votes.push({
+      ministry: ministryNames[key],
+      candidate: selected.value
+    });
+
+  }
+
+  fetch(WEBAPP_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: {
+      "Content-Type": "text/plain"
+    },
+    body: JSON.stringify({
+      voterId: voterId,
+      votes: votes
+    })
+  })
+  .then(() => {
+
+    document.querySelector(".submit-btn").disabled = true;
+
+    const message = document.createElement("div");
+
+    message.textContent =
+      "✅ Your vote has been recorded. Thank you!";
+
+    message.style.textAlign = "center";
+    message.style.color = "#2e7d32";
+    message.style.fontSize = "24px";
+    message.style.marginTop = "30px";
+
+    document.getElementById("votingForm")
+      .appendChild(message);
+
+    setTimeout(() => {
+      window.location.href = "WELCOME_PAGE.HTML";
+    }, 3000);
+
+  })
+  .catch(error => {
+
+    console.error(error);
+    alert("Unable to submit vote.");
+
   });
+
+  return false;
 }
 
-fetch(WEBAPP_URL, {
-  method: "POST",
-  mode: "no-cors",
-  body: JSON.stringify({
-    voterId: voterId,
-    votes: votes
-  })
-})
-.then(() => {
-
- 
-      }
-    </script>
-
+</script>
     <button type="submit" class="submit-btn">SUBMIT VOTE</button>
   </form>
 </body>
