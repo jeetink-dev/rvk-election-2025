@@ -177,7 +177,8 @@ color:#555;
 <input
 type="password"
 id="password"
-placeholder="Enter Password">
+placeholder="Enter Password"
+onkeypress="if(event.key==='Enter') login()">
 
 <br>
 
@@ -233,7 +234,8 @@ Auto Refresh Every 10 Seconds
 </div>
 
 </div>
-
+let latestData = {};
+let charts = {};
 <script>
 
 const API_URL =
@@ -265,3 +267,174 @@ alert("Invalid Password");
 }
 
 }
+  async function loadResults() {
+
+try {
+
+const response = await fetch(API_URL);
+const data = await response.json();
+
+latestData = data;
+
+renderResults(data);
+
+} catch(error) {
+
+console.error(error);
+
+document.getElementById("resultsContainer").innerHTML =
+"<h2 style='color:red;text-align:center;'>Unable to load results</h2>";
+
+}
+
+}
+
+function renderResults(data) {
+
+const container =
+document.getElementById("resultsContainer");
+
+container.innerHTML = "";
+
+let totalVotes = 0;
+
+for(const ministry in data){
+
+const candidates = data[ministry];
+
+let winnerVotes = 0;
+
+for(const candidate in candidates){
+
+if(candidates[candidate] > winnerVotes){
+
+winnerVotes = candidates[candidate];
+
+}
+
+totalVotes += candidates[candidate];
+
+}
+
+const card = document.createElement("div");
+card.className = "ministry-card";
+
+let html = `
+<div class="ministry-title">
+${ministry}
+</div>
+
+<table>
+
+<tr>
+<th>Candidate</th>
+<th>Votes</th>
+</tr>
+`;
+
+for(const candidate in candidates){
+
+const votes = candidates[candidate];
+
+const winnerClass =
+votes === winnerVotes ? "winner" : "";
+
+html += `
+<tr class="${winnerClass}">
+<td>${candidate}</td>
+<td>${votes}</td>
+</tr>
+`;
+
+}
+
+html += `
+</table>
+
+<canvas id="${ministry.replace(/\s+/g,'')}"></canvas>
+`;
+
+card.innerHTML = html;
+
+container.appendChild(card);
+
+setTimeout(()=>{
+
+function createChart(canvasId,data){
+
+const ctx = document.getElementById(canvasId);
+
+if(!ctx) return;
+
+if(charts[canvasId]){
+charts[canvasId].destroy();
+}
+
+charts[canvasId] = new Chart(ctx,{
+type:'bar',
+
+data:{
+labels:Object.keys(data),
+
+datasets:[{
+label:'Votes',
+data:Object.values(data)
+}]
+},
+
+options:{
+responsive:true,
+
+plugins:{
+legend:{
+display:false
+}
+},
+
+scales:{
+y:{
+beginAtZero:true
+}
+}
+}
+});
+
+}
+
+function exportCSV(){
+
+let csv =
+"Ministry,Candidate,Votes\n";
+
+for(const ministry in latestData){
+
+for(const candidate in latestData[ministry]){
+
+csv +=
+`"${ministry}","${candidate}",${latestData[ministry][candidate]}\n`;
+
+}
+
+}
+
+const blob =
+new Blob([csv],{type:"text/csv"});
+
+const url =
+window.URL.createObjectURL(blob);
+
+const a =
+document.createElement("a");
+
+a.href = url;
+
+a.download = "ElectionResults.csv";
+
+a.click();
+
+window.URL.revokeObjectURL(url);
+
+}
+</script>
+</body>
+</html>
