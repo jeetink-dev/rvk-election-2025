@@ -245,13 +245,14 @@ const ADMIN_PASSWORD = "admin123";
 let latestData = {};
 let charts = {};
 
+function login(){
+
 const pass =
 document.getElementById("password").value;
 
 if(pass === ADMIN_PASSWORD){
 
 document.getElementById("loginPage").style.display="none";
-
 document.getElementById("dashboard").style.display="block";
 
 loadResults();
@@ -264,10 +265,11 @@ alert("Invalid Password");
 
 }
 
+}
 
-  async function loadResults() {
+async function loadResults(){
 
-try {
+try{
 
 const response = await fetch(API_URL);
 const data = await response.json();
@@ -276,7 +278,7 @@ latestData = data;
 
 renderResults(data);
 
-} catch(error) {
+}catch(error){
 
 console.error(error);
 
@@ -287,7 +289,7 @@ document.getElementById("resultsContainer").innerHTML =
 
 }
 
-function renderResults(data) {
+function renderResults(data){
 
 const container =
 document.getElementById("resultsContainer");
@@ -305,9 +307,7 @@ let winnerVotes = 0;
 for(const candidate in candidates){
 
 if(candidates[candidate] > winnerVotes){
-
 winnerVotes = candidates[candidate];
-
 }
 
 totalVotes += candidates[candidate];
@@ -318,12 +318,9 @@ const card = document.createElement("div");
 card.className = "ministry-card";
 
 let html = `
-<div class="ministry-title">
-${ministry}
-</div>
+<div class="ministry-title">${ministry}</div>
 
 <table>
-
 <tr>
 <th>Candidate</th>
 <th>Votes</th>
@@ -346,21 +343,33 @@ html += `
 
 }
 
+const canvasId =
+ministry.replace(/\s+/g,'');
+
 html += `
 </table>
-
-<canvas id="${ministry.replace(/\s+/g,'')}"></canvas>
+<canvas id="${canvasId}"></canvas>
 `;
 
 card.innerHTML = html;
 
 container.appendChild(card);
 
-setTimeout(()=>{
+setTimeout(() => {
+createChart(canvasId,candidates);
+},100);
+
+}
+
+document.getElementById("totalVotes").innerText =
+totalVotes;
+
+}
 
 function createChart(canvasId,data){
 
-const ctx = document.getElementById(canvasId);
+const ctx =
+document.getElementById(canvasId);
 
 if(!ctx) return;
 
@@ -425,13 +434,15 @@ const a =
 document.createElement("a");
 
 a.href = url;
-
 a.download = "ElectionResults.csv";
 
+document.body.appendChild(a);
 a.click();
+document.body.removeChild(a);
 
 window.URL.revokeObjectURL(url);
 
+}
 
 </script>
 </body>
