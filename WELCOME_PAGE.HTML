@@ -33,28 +33,30 @@ box-shadow:0 10px 30px rgba(0,0,0,0.15);
 text-align:center;
 }
 
-.header{
-display:flex;
-justify-content:center;
-align-items:center;
-gap:20px;
-flex-wrap:wrap;
-margin-bottom:20px;
+.header-section{
+    text-align:center;
+    margin-bottom:25px;
 }
 
-.header img{
-height:80px;
+.school-logo{
+    width:100px;
+    height:auto;
+    display:block;
+    margin:0 auto 15px auto;
 }
 
-h1{
-color:#1a237e;
-font-size:28px;
-font-family:Georgia,serif;
+.header-section h1{
+    margin:0;
+    color:#1a237e;
+    font-size:42px;
+    font-weight:bold;
+    line-height:1.2;
 }
 
-h2{
-color:#d84315;
-margin-bottom:30px;
+.header-section h2{
+    margin-top:10px;
+    color:#d84315;
+    font-size:20px;
 }
 
 label{
@@ -94,14 +96,23 @@ background:#2e7d32;
 
 <div class="container">
 
-<div class="header">
-<img src="2.png" alt="Logo">
-<div>
-<h1>RASHTROTTHANA VIDYA KENDRA</h1>
-<h1>KALABURAGI</h1>
+<div class="login-box">
 
+    <div class="header-section">
 
-<h2>Student Council Election 2026-27</h2>
+        <img src="logo.png" class="school-logo">
+
+        <h1>
+            RASHTROTTHANA VIDYA KENDRA
+            <br>
+            KALABURAGI
+        </h1>
+
+        <h2>Student Council Election 2026-27</h2>
+
+    </div>
+
+</div>
 
 <label>CLASS</label>
 
