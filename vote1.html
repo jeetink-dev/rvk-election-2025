@@ -264,63 +264,45 @@ function validateVote() {
   const voterId =
     `${studentClass}_${rollNumber}`;
 
-  const votes = [];
+ const votes = [];
 
-  for (const key in ministries) {
+for (const key in ministries) {
 
-    const selected =
-      document.querySelector(
-        `input[name="${key}"]:checked`
-      );
+  const selected =
+    document.querySelector(`input[name="${key}"]:checked`);
 
-    votes.push({
-      ministry: ministryNames[key],
-      candidate: selected.value
-    });
-
-  }
-
-  fetch(WEBAPP_URL, {
-    method: "POST",
-    mode: "no-cors",
-    headers: {
-      "Content-Type": "text/plain"
-    },
-    body: JSON.stringify({
-      voterId: voterId,
-      votes: votes
-    })
-  })
-  .then(() => {
-
-    document.querySelector(".submit-btn").disabled = true;
-
-    const message = document.createElement("div");
-
-    message.textContent =
-      "✅ Your vote has been recorded. Thank you!";
-
-    message.style.textAlign = "center";
-    message.style.color = "#2e7d32";
-    message.style.fontSize = "24px";
-    message.style.marginTop = "30px";
-
-    document.getElementById("votingForm")
-      .appendChild(message);
-
-    setTimeout(() => {
-      window.location.href = "WELCOME_PAGE.HTML";
-    }, 3000);
-
-  })
-  .catch(error => {
-
-    console.error(error);
-    alert("Unable to submit vote.");
-
+  votes.push({
+    ministry: ministryNames[key],
+    candidate: selected.value
   });
+}
 
-  return false;
+fetch(WEBAPP_URL, {
+  method: "POST",
+  mode: "no-cors",
+  headers: {
+    "Content-Type": "text/plain;charset=utf-8"
+  },
+  body: JSON.stringify({
+    voterId: voterId,
+    votes: votes
+  })
+})
+.then(() => {
+
+  alert("Vote Recorded Successfully");
+
+  window.location.href = "WELCOME_PAGE.HTML";
+
+})
+.catch(err => {
+
+  console.log(err);
+  alert("Submission Failed");
+
+});
+
+return false;
 }
 
 </script>
