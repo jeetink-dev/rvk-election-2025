@@ -167,7 +167,7 @@
 
   <h2>Student Council Voting – 2025–26</h2>
   <form id="votingForm" onsubmit="return validateVote();">
-    <script>
+   <script>
 
 const WEBAPP_URL =
 "https://script.google.com/macros/s/AKfycbwCz_n0UJm2LH3SOXXFyXSmggVtSbTZumS-MFSR4UEILE-5TMqPJUuqB7vidqymB4As5w/exec";
@@ -201,17 +201,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   for (const key of Object.keys(ministryNames)) {
 
-    const candidates = ministries[key];
-
     const div = document.createElement("div");
     div.className = "ministry";
     div.id = key;
+
     div.innerHTML = `<h3>${ministryNames[key]}</h3>`;
 
     const container = document.createElement("div");
     container.className = "candidates";
 
-    candidates.forEach(name => {
+    ministries[key].forEach(name => {
 
       const label = document.createElement("label");
       label.className = "candidate";
@@ -223,19 +222,13 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
 
       container.appendChild(label);
-
     });
 
     div.appendChild(container);
     fragment.appendChild(div);
-
   }
 
-  form.insertBefore(
-    fragment,
-    document.querySelector(".submit-btn")
-  );
-
+  form.insertBefore(fragment, document.querySelector(".submit-btn"));
 });
 
 function validateVote() {
@@ -246,63 +239,69 @@ function validateVote() {
 
       alert(`Please select one candidate for ${ministryNames[key]}`);
 
-      document.getElementById(key)
-        .scrollIntoView({
-          behavior: "smooth"
-        });
+      document.getElementById(key).scrollIntoView({
+        behavior: "smooth"
+      });
 
       return false;
     }
   }
 
   const studentClass =
-    sessionStorage.getItem("studentClass");
+    sessionStorage.getItem("studentClass") || "Unknown";
 
   const rollNumber =
-    sessionStorage.getItem("rollNumber");
+    sessionStorage.getItem("rollNumber") || Date.now();
 
   const voterId =
     `${studentClass}_${rollNumber}`;
 
- const votes = [];
+  const votes = [];
 
-for (const key in ministries) {
+  for (const key in ministries) {
 
-  const selected =
-    document.querySelector(`input[name="${key}"]:checked`);
+    const selected =
+      document.querySelector(`input[name="${key}"]:checked`);
 
-  votes.push({
-    ministry: ministryNames[key],
-    candidate: selected.value
+    votes.push({
+      ministry: ministryNames[key],
+      candidate: selected.value
+    });
+  }
+
+  fetch(WEBAPP_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8"
+    },
+    body: JSON.stringify({
+      voterId: voterId,
+      votes: votes
+    })
   });
-}
 
-fetch(WEBAPP_URL, {
-  method: "POST",
-  mode: "no-cors",
-  headers: {
-    "Content-Type": "text/plain;charset=utf-8"
-  },
-  body: JSON.stringify({
-    voterId: voterId,
-    votes: votes
-  })
-})
-.then(() => {
+  document.querySelector(".submit-btn").disabled = true;
 
-  alert("Vote Recorded Successfully");
+  const message = document.createElement("div");
 
-  window.location.href = "WELCOME_PAGE.HTML";
+  message.innerHTML =
+    "✅ Your vote has been recorded. Thank you!";
 
-})
-.catch(err => {
+  message.style.textAlign = "center";
+  message.style.color = "#2e7d32";
+  message.style.fontSize = "24px";
+  message.style.marginTop = "30px";
 
-  console.log(err);
-  alert("Submission Failed");
+  document
+    .getElementById("votingForm")
+    .appendChild(message);
 
-});
+  setTimeout(() => {
+    window.location.href = "WELCOME_PAGE.HTML";
+  }, 3000);
 
-return false;
+  return false;
 }
 
 </script>
