@@ -241,33 +241,27 @@ const rollNumber = sessionStorage.getItem("rollNumber");
 
 const voterId = `${studentClass}_${rollNumber}`;
 
-const votePromises = [];
+const votes = [];
 
 for (const key in ministries) {
 
-  const ministryName = ministryNames[key];
-  const selected = document.querySelector(`input[name="${key}"]:checked`);
+  const selected =
+    document.querySelector(`input[name="${key}"]:checked`);
 
-  if (selected) {
-
-    votePromises.push(
-      fetch(WEBAPP_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          voterId: voterId,
-          ministry: ministryName,
-          candidate: selected.value
-        })
-      })
-    );
-
-  }
+  votes.push({
+    ministry: ministryNames[key],
+    candidate: selected.value
+  });
 }
 
-Promise.all(votePromises)
+fetch(WEBAPP_URL, {
+  method: "POST",
+  mode: "no-cors",
+  body: JSON.stringify({
+    voterId: voterId,
+    votes: votes
+  })
+})
 .then(() => {
 
   document.querySelector(".submit-btn").disabled = true;
